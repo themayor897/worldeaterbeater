@@ -30,8 +30,8 @@ Event OnHit(ObjectReference akAggressor, Form akSource, Projectile akProjectile,
 		dragonMadSound.Play(Game.GetPlayer())
 		Game.GetPlayer().TranslateToRef(alduinMouth, 500)
 		Utility.Wait(5)
-		Game.GetPlayer().MoveTo(outside)
 		Game.GetPlayer().StopTranslation()
+		Game.GetPlayer().MoveTo(outside)
 		Utility.Wait(3)
 		thisMusic2.Add()
 	endif
