@@ -7,18 +7,25 @@ int randomTime
 float randomX
 float randomY
 float randomZ
-
+Actor Property playerRef auto
 Event OnLoad()
-	RegisterForSingleUpdate(2)
+    RegisterForSingleUpdate(2)
 EndEvent
 
 Event OnUpdate()
-	randomTime = Utility.RandomInt(0, 3)
-	Utility.Wait(randomTime)
-	randomX = Utility.RandomFloat(0, 100)
-	randomY = Utility.RandomFloat(0, 100)
-	randomZ = Utility. RandomFloat(0, 100)
-	firingMarker.MoveTo(Game.GetPlayer(), randomX, randomY, randomZ)
-	alduinSpell.Cast(self, firingMarker)
-	RegisterForSingleUpdate(2)
+    if firingMarker.is3DLoaded()
+        randomTime = Utility.RandomInt(0, 3)
+        Utility.Wait(randomTime)
+        randomX = Utility.RandomFloat(0, 100)
+        randomY = Utility.RandomFloat(0, 100)
+        randomZ = Utility. RandomFloat(0, 100)
+        firingMarker.MoveTo(playerRef, randomX, randomY, randomZ)
+        alduinSpell.Cast(self, firingMarker)
+    Endif
+    RegisterForSingleUpdate(2)
+EndEvent
+
+
+Event OnUnload()
+    UnregisterForUpdate()
 EndEvent

@@ -16,15 +16,16 @@ ObjectReference Property alduinBack auto
 Spell Property bigExplosion auto
 Sound Property roar auto
 
+spell Property unShout auto
 ActorBase Property shadesofAlduin auto
 Actor Property alduin auto
 ObjectReference dragon1
 ObjectReference dragon2
-
+Actor Property playerRef auto
 Int startingState = 0
 GlobalVariable Property dragonBornsFreed auto
 GlobalVariable Property alduinHealth auto
-bool doOnce = false
+Bool doOnce = false
 MusicType Property music1 auto
 MusicType Property music2 auto
 
@@ -45,15 +46,15 @@ MagicEffect Property unrelentingForce3 auto
 
 
 Event OnMagicEffectApply(ObjectReference akCaster, MagicEffect akEffect)
-	if(akCaster== Game.GetPlayer())
+	if(akCaster== playerRef)
 
 	if(akEffect== unrelentingForce1 || akEffect== unrelentingForce2 || akEffect== unrelentingForce3)
 
-		if(startingState < 10)
+		if startingState < 10
 
 			self.TranslateToRef(marker1, 1000)
 			startingState  = 11
-			Game.ShakeCamera(Game.GetPlayer(), 1, 1)
+			Game.ShakeCamera(playerRef, 1, 1)
 		elseif(startingState > 11)
 			if(doOnce == False)
 				doOnce = True
@@ -65,15 +66,16 @@ Event OnMagicEffectApply(ObjectReference akCaster, MagicEffect akEffect)
 				bigExplosion.Cast(self, alduin)
 				self.Disable()
 				alduinHealth.setValue(alduinHealth.GetValue() + 1)
-				roar.Play(Game.GetPlayer())
-				Game.ShakeCamera(Game.GetPlayer(), 1, 1)		
+				roar.Play(playerRef)
+				Game.ShakeCamera(playerRef, 1, 1)		  
 				if(alduinHealth.GetValue() >= 10)
-					Game.GetPlayer().TranslateToRef(alduin, 700)
-					Game.ShakeCamera(Game.GetPlayer(), 1, 6)		
+					playerRef.TranslateToRef(alduin, 700)
+					Game.ShakeCamera(playerRef, 1, 6)
 					Utility.Wait(4)
 					music1.Remove()
-					Game.GetPlayer().StopTranslation()
-					Game.GetPlayer().MoveTo(alduinBack)
+					playerRef.StopTranslation()
+					playerRef.RemoveSpell(unShout)
+					playerRef.MoveTo(alduinBack)
 					Utility.Wait(3)
 					music2.Add()
 				endif
@@ -87,12 +89,12 @@ Event OnMagicEffectApply(ObjectReference akCaster, MagicEffect akEffect)
 EndEvent
 
 Event OnHit(ObjectReference akAggressor, Form akSource, Projectile akProjectile, bool abPowerAttack, bool abSneakAttack, bool abBashAttack, bool abHitBlocked)
-	if(akAggressor == Game.GetPlayer())
+	if(akAggressor == playerRef)
 		startingState += 5
 		if(startingState == 10)
 			self.TranslateToRef(marker1, 600)
 			startingState  = 11
-			Game.ShakeCamera(Game.GetPlayer(), 1, 1)
+			Game.ShakeCamera(playerRef, 1, 1)
 		endif
 	endif
 EndEvent
@@ -124,9 +126,9 @@ Event OnTranslationComplete()
 		self.TranslateToRef(marker9, 1000)		
 	elseif(startingState == 19)
 		startingState = 20
-		self.TranslateToRef(marker1, 1000)	
+		self.TranslateToRef(marker1, 1000)
 	elseif(startingState == 20)
 		startingState = 12
-		self.TranslateToRef(marker2, 1000)	
+		self.TranslateToRef(marker2, 1000)
 	endif
 EndEvent
