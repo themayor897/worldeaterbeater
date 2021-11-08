@@ -3,29 +3,33 @@ Scriptname _AA_StomachFiringModule extends ObjectReference
 Spell Property alduinSpell auto
 ObjectReference Property firingMarker auto
 GlobalVariable Property alduinGlobal auto
+Actor Property playerRef auto
+
 int randomTime
 float randomX
 float randomY
 float randomZ
-Actor Property playerRef auto
+
 Event OnLoad()
-    RegisterForSingleUpdate(2)
+	RegisterForSingleUpdate(2)
+EndEvent
+
+Event OnUnload()
+	UnregisterForUpdate()
 EndEvent
 
 Event OnUpdate()
-    if firingMarker.is3DLoaded()
-        randomTime = Utility.RandomInt(0, 3)
-        Utility.Wait(randomTime)
-        randomX = Utility.RandomFloat(0, 100)
-        randomY = Utility.RandomFloat(0, 100)
-        randomZ = Utility. RandomFloat(0, 100)
-        firingMarker.MoveTo(playerRef, randomX, randomY, randomZ)
-        alduinSpell.Cast(self, firingMarker)
-    Endif
-    RegisterForSingleUpdate(2)
-EndEvent
+	randomTime = Utility.RandomInt(0, 3)
+	Utility.Wait(randomTime)
+	randomX = Utility.RandomFloat(0, 100)
+	randomY = Utility.RandomFloat(0, 100)
+	randomZ = Utility.RandomFloat(0, 100)
 
+	if firingMarker.is3DLoaded()
+		firingMarker.MoveTo(playerRef, randomX, randomY, randomZ)
+		alduinSpell.Cast(self, firingMarker)
+	Endif
+	
+	RegisterForSingleUpdate(2)
 
-Event OnUnload()
-    UnregisterForUpdate()
 EndEvent
