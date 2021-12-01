@@ -1,5 +1,5 @@
 ;BEGIN FRAGMENT CODE - Do not edit anything between this and the end comment
-;NEXT FRAGMENT INDEX 6
+;NEXT FRAGMENT INDEX 17
 Scriptname _WEB_BattleUtilityQuest Extends Quest Hidden
 
 ;BEGIN ALIAS PROPERTY Alduin
@@ -7,13 +7,15 @@ Scriptname _WEB_BattleUtilityQuest Extends Quest Hidden
 ReferenceAlias Property Alias_Alduin Auto
 ;END ALIAS PROPERTY
 
-;BEGIN FRAGMENT Fragment_4
-Function Fragment_4()
+;BEGIN FRAGMENT Fragment_9
+Function Fragment_9()
 ;BEGIN CODE
-;Player on Alduin's back
-
-Utility.Wait(164)
-SetStage(41)
+;Disable player's controls and make them invicible
+Game.DisablePlayerControls()
+playerRef.SetGhost(True)
+Alduin.DispelAllSpells()
+AlduinScale.SetValue(1)
+Alduin.EvaluatePackage()
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -28,6 +30,51 @@ acid.TranslateToRef(acidMarker, 30)
 acidTrigger.TranslateToRef(acidMarker, 75)
 shooter1.EnableNoWait()
 walls.DisableNoWait()
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_6
+Function Fragment_6()
+;BEGIN CODE
+;Start of Alduin battle
+
+Music15.add()
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_11
+Function Fragment_11()
+;BEGIN CODE
+playerRef.PushActorAway(FelldirRefNEW, 30)
+playerRef.PushActorAway(GormlaithRefNEW, 30)
+playerRef.PushActorAway(HakonRefNew, 30)
+AlduinScale.SetValue(2)
+Alduin.EvaluatePackage()
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_4
+Function Fragment_4()
+;BEGIN CODE
+;Player on Alduin's back
+
+Utility.Wait(164)
+SetStage(41)
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_13
+Function Fragment_13()
+;BEGIN CODE
+AlduinScale.SetValue(3)
+Alduin.EvaluatePackage()
+FelldirRefNEW.DisableNoWait(true)
+GormlaithRefNEW.DisableNoWait(true)
+HakonRefNew.DisableNoWait(true)
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -64,6 +111,25 @@ Utility.Wait(3)
 EndFunction
 ;END FRAGMENT
 
+;BEGIN FRAGMENT Fragment_15
+Function Fragment_15()
+;BEGIN CODE
+;Increase his size
+
+AlduinScale.SetValue(4)
+blackScreen.Apply()
+Utility.Wait(10)
+eatingSound.Play(playerRef)
+Music15.Remove()
+Utility.Wait(3)
+playerRef.MoveTo(wombEntrance)
+Utility.Wait(1)
+wombThrow.PushActorAway(playerRef, 30)
+blackScreen.Remove()
+;END CODE
+EndFunction
+;END FRAGMENT
+
 ;END FRAGMENT CODE - Do not edit anything between this and the begin comment
 
 ;Global Properties
@@ -76,12 +142,19 @@ GlobalVariable Property AlduinScale Auto
 GlobalVariable Property alduinHealth auto
 
 ;Music
-
 MusicType Property Music15 auto
 MusicType Property music2 auto
 MusicType Property music3 auto
 MusicType Property music4 auto
 
+;Stage 1: Sovngarde Start
+ImageSpaceModifier Property blackScreen auto
+Sound Property eatingSound auto
+Package Property AlduinPackage1 auto
+Package Property AlduinPackage2 auto
+Package Property AlduinPackage3 auto
+ObjectReference Property wombEntrance auto
+ObjectReference Property wombThrow auto
 
 ;Stage 2: Stomach
 ObjectReference Property acid auto
