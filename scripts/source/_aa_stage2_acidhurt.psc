@@ -4,6 +4,7 @@ Spell Property fireSpell auto
 ObjectReference Property acid auto
 ObjectReference Property acidMarker1 auto
 ObjectReference Property acidMarker2 auto
+Actor Property PlayerRef Auto
 int upState = 0;
 
 Event OnTranslationComplete()
@@ -21,13 +22,13 @@ EndEvent
 
 Event OnTriggerEnter(ObjectReference akActionRef)
 	if(akActionRef == Game.GetPlayer())
-		Game.GetPlayer().AddSpell(fireSpell)
+		PlayerRef.AddSpell(fireSpell, false)
 	endif
 EndEvent
 
 
 Event OnTriggerLeave(ObjectReference akActionRef)
 	if(akActionRef == Game.GetPlayer())
-		Game.GetPlayer().RemoveSpell(fireSpell)
+		PlayerRef.RemoveSpell(fireSpell)
 	endif
 EndEvent
