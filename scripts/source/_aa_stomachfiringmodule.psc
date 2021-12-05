@@ -19,17 +19,19 @@ Event OnUnload()
 EndEvent
 
 Event OnUpdate()
-	randomTime = Utility.RandomInt(0, 3)
-	Utility.Wait(randomTime)
-	randomX = Utility.RandomFloat(0, 100)
-	randomY = Utility.RandomFloat(0, 100)
-	randomZ = Utility.RandomFloat(0, 100)
-
-	if firingMarker.is3DLoaded()
-		firingMarker.MoveTo(playerRef, randomX, randomY, randomZ)
-		alduinSpell.Cast(self, firingMarker)
-	Endif
-	
-	RegisterForSingleUpdate(2)
-
+	if PlayerRef.GetParentCell() == self.GetParentCell()
+		randomTime = Utility.RandomInt(0, 3)
+		Utility.Wait(randomTime)
+		randomX = Utility.RandomFloat(0, 100)
+		randomY = Utility.RandomFloat(0, 100)
+		randomZ = Utility.RandomFloat(0, 100)
+		if self.is3DLoaded()
+			firingMarker.MoveTo(playerRef, randomX, randomY, randomZ)
+			alduinSpell.Cast(self, firingMarker)
+			RegisterForSingleUpdate(2)
+		EndIf
+	Else
+		;player has left stomach
+		Debug.Trace("Player has left Aludin's Stomach.")
+	EndIf
 EndEvent
