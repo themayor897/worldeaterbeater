@@ -2,6 +2,7 @@ Scriptname _AA_WingMove extends ObjectReference
 
 ObjectReference Property wing1 auto
 ObjectReference Property wing2 auto
+Actor Property PlayerRef Auto
 int moveState = 0
 
 Event OnTranslationComplete()
