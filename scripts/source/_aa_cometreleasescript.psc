@@ -11,12 +11,10 @@ ObjectReference Property marker6 auto
 ObjectReference Property marker7 auto
 ObjectReference Property marker8 auto
 ObjectReference Property marker9 auto
-ObjectReference Property alduinBack auto
 
 Spell Property bigExplosion auto
 Sound Property roar auto
 
-spell Property unShout auto
 ActorBase Property shadesofAlduin auto
 Actor Property alduin auto
 ObjectReference dragon1
@@ -26,8 +24,13 @@ Int startingState = 0
 GlobalVariable Property dragonBornsFreed auto
 GlobalVariable Property alduinHealth auto
 Bool doOnce = false
-MusicType Property music1 auto
-MusicType Property music2 auto
+
+MagicEffect Property unrelentingForce1 auto
+MagicEffect Property unrelentingForce2 auto
+MagicEffect Property unrelentingForce3 auto
+
+Quest Property UtilityQuest auto
+Int Property myStage auto
 
 Event OnLoad()
 	if(dragonBornsFreed.GetValue() < 3)
@@ -39,10 +42,6 @@ Event OnLoad()
 		dragon2.MoveTo(self, -100)
 	endif
 EndEvent
-
-MagicEffect Property unrelentingForce1 auto
-MagicEffect Property unrelentingForce2 auto
-MagicEffect Property unrelentingForce3 auto
 
 
 Event OnMagicEffectApply(ObjectReference akCaster, MagicEffect akEffect)
@@ -68,16 +67,8 @@ Event OnMagicEffectApply(ObjectReference akCaster, MagicEffect akEffect)
 				alduinHealth.setValue(alduinHealth.GetValue() + 1)
 				roar.Play(playerRef)
 				Game.ShakeCamera(playerRef, 1, 1)		  
-				if(alduinHealth.GetValue() >= 10)
-					playerRef.TranslateToRef(alduin, 700)
-					Game.ShakeCamera(playerRef, 1, 6)
-					Utility.Wait(4)
-					music1.Remove()
-					playerRef.StopTranslation()
-					playerRef.RemoveSpell(unShout)
-					playerRef.MoveTo(alduinBack)
-					Utility.Wait(3)
-					music2.Add()
+				if(alduinHealth.GetValue() >= 4)
+					UtilityQuest.SetStage(myStage)
 				endif
 				Utility.Wait(5)
 				doOnce = False
