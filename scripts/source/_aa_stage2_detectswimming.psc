@@ -12,7 +12,7 @@ EndEvent
 Event OnUpdate()
 
 	if(PlayerRef.GetPositionZ() < acidWater.GetPositionZ())
-		PlayerRef.AddSpell(acidSpell)
+		PlayerRef.AddSpell(acidSpell, false)
 	else
 		PlayerRef.RemoveSpell(acidSpell)
 	endif
