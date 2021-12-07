@@ -1,6 +1,6 @@
 Scriptname _AA_Stage4HurtBitScript extends ObjectReference  
 
-
+Actor Property PlayerRef auto
 GlobalVariable Property alduinHealth auto
 ObjectReference Property alduinHurtBit1 auto
 ObjectReference Property alduinHurtBit2 auto
@@ -10,7 +10,7 @@ bool hitOnce = false
 Sound Property dragonMadSound auto
 Event OnHit(ObjectReference akAggressor, Form akSource, Projectile akProjectile, bool abPowerAttack, bool abSneakAttack,bool abBashAttack, bool	abHitBlocked)
 	if(hitOnce == false)
-	if(akAggressor == Game.GetPlayer())
+	if(akAggressor == PlayerRef)
 		hitOnce = true
 		alduinHealth.setValue(alduinHealth.getValue() + 1)
 		random = Utility.RandomInt(0, 2)
@@ -32,8 +32,8 @@ Event OnHit(ObjectReference akAggressor, Form akSource, Projectile akProjectile,
 			alduinHurtBit2.DisableNoWait(true);
 			alduinHurtBit1.DisableNoWait(true);
 		endif
-		dragonMadSound.Play(Game.GetPlayer())
-		Game.ShakeCamera(Game.GetPlayer(), 1, 1)
+		dragonMadSound.Play(PlayerRef)
+		Game.ShakeCamera(PlayerRef, 1, 1)
 		Utility.Wait(6)
 		hitOnce = false
 	endif
