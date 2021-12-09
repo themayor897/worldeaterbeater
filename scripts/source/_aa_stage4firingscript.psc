@@ -16,3 +16,7 @@ EndEvent
 Event OnUnload()
 	UnregisterForUpdate()
 EndEvent
+
+Event OnCellDetach()
+	UnregisterForUpdate()
+EndEvent
