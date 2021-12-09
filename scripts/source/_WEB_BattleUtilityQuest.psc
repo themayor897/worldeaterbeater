@@ -7,14 +7,72 @@ Scriptname _WEB_BattleUtilityQuest Extends Quest Hidden
 ReferenceAlias Property Alias_Alduin Auto
 ;END ALIAS PROPERTY
 
-;BEGIN FRAGMENT Fragment_13
-Function Fragment_13()
+;BEGIN FRAGMENT Fragment_11
+Function Fragment_11()
 ;BEGIN CODE
-AlduinScale.SetValue(3)
+playerRef.PushActorAway(FelldirRefNEW, 30)
+playerRef.PushActorAway(GormlaithRefNEW, 30)
+playerRef.PushActorAway(HakonRefNew, 30)
+AlduinScale.SetValue(2)
 Alduin.EvaluatePackage()
-FelldirRefNEW.DisableNoWait(true)
-GormlaithRefNEW.DisableNoWait(true)
-HakonRefNew.DisableNoWait(true)
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_2
+Function Fragment_2()
+;BEGIN CODE
+;Player has entered the bottom of Alduin's stomach while falling.
+
+acid.TranslateToRef(acidMarker, 30)
+acidTrigger.TranslateToRef(acidMarker, 75)
+shooter1.EnableNoWait()
+walls.DisableNoWait()
+Utility.Wait(3)
+PlayerRef.SetGhost(false)
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_15
+Function Fragment_15()
+;BEGIN CODE
+;Increase his size
+
+AlduinScale.SetValue(4)
+FadeToBlackImod.Apply()
+utility.wait(2)
+FadeToBlackImod.PopTo(FadeToBlackHoldImod)
+Utility.Wait(4)
+eatingSound.Play(playerRef)
+Music15.Remove()
+Utility.Wait(3)
+playerRef.MoveTo(wombEntrance)
+Utility.Wait(1)
+wombThrow.PushActorAway(playerRef, 30)
+FadeToBlackHoldImod.PopTo(FadeToBlackBackImod)
+FadeToBlackHoldImod.Remove()
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_17
+Function Fragment_17()
+;BEGIN CODE
+Shooter1.UnregisterForUpdate()
+Shooter2.UnregisterForUpdate()
+Shooter3.UnregisterForUpdate()
+Shooter1.disable()
+Shooter2.disable()
+Shooter3.disable()
+Utility.Wait(5)
+Game.ShakeCamera(playerRef, 1, 1)
+dragonMadSound.Play(playerRef)
+playerRef.TranslateToRef(alduinMouth, 500)
+Utility.Wait(5)
+playerRef.StopTranslation()
+playerRef.MoveTo(outside)
+Utility.Wait(3)
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -60,28 +118,6 @@ Music15.add()
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_15
-Function Fragment_15()
-;BEGIN CODE
-;Increase his size
-
-AlduinScale.SetValue(4)
-FadeToBlackImod.Apply()
-utility.wait(2)
-FadeToBlackImod.PopTo(FadeToBlackHoldImod)
-Utility.Wait(4)
-eatingSound.Play(playerRef)
-Music15.Remove()
-Utility.Wait(3)
-playerRef.MoveTo(wombEntrance)
-Utility.Wait(1)
-wombThrow.PushActorAway(playerRef, 30)
-FadeToBlackHoldImod.PopTo(FadeToBlackBackImod)
-FadeToBlackHoldImod.Remove()
-;END CODE
-EndFunction
-;END FRAGMENT
-
 ;BEGIN FRAGMENT Fragment_9
 Function Fragment_9()
 ;BEGIN CODE
@@ -100,20 +136,28 @@ Function Fragment_4()
 ;BEGIN CODE
 ;Player on Alduin's back
 
-Utility.Wait(100)
+Utility.Wait(99)
+Int iIndex = S4Firer.GetSize()
+	While iIndex
+		iIndex -= 1
+		ObjectReference kReference = S4Firer.GetAt(iIndex) As ObjectReference
+		If kReference.IsEnabled()
+			kReference.Disable()
+		EndIf
+	EndWhile
 SetStage(41)
 ;END CODE
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_11
-Function Fragment_11()
+;BEGIN FRAGMENT Fragment_13
+Function Fragment_13()
 ;BEGIN CODE
-playerRef.PushActorAway(FelldirRefNEW, 30)
-playerRef.PushActorAway(GormlaithRefNEW, 30)
-playerRef.PushActorAway(HakonRefNew, 30)
-AlduinScale.SetValue(2)
+AlduinScale.SetValue(3)
 Alduin.EvaluatePackage()
+FelldirRefNEW.DisableNoWait(true)
+GormlaithRefNEW.DisableNoWait(true)
+HakonRefNew.DisableNoWait(true)
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -129,36 +173,6 @@ playerRef.RemoveSpell(unShout)
 playerRef.MoveTo(alduinBack)
 Utility.Wait(3)
 SetStage(40)
-;END CODE
-EndFunction
-;END FRAGMENT
-
-;BEGIN FRAGMENT Fragment_2
-Function Fragment_2()
-;BEGIN CODE
-;Player has entered the bottom of Alduin's stomach while falling.
-
-acid.TranslateToRef(acidMarker, 30)
-acidTrigger.TranslateToRef(acidMarker, 75)
-shooter1.EnableNoWait()
-walls.DisableNoWait()
-Utility.Wait(3)
-PlayerRef.SetGhost(false)
-;END CODE
-EndFunction
-;END FRAGMENT
-
-;BEGIN FRAGMENT Fragment_17
-Function Fragment_17()
-;BEGIN CODE
-Utility.Wait(5)
-Game.ShakeCamera(playerRef, 1, 1)
-dragonMadSound.Play(playerRef)
-playerRef.TranslateToRef(alduinMouth, 500)
-Utility.Wait(5)
-playerRef.StopTranslation()
-playerRef.MoveTo(outside)
-Utility.Wait(3)
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -218,3 +232,5 @@ ObjectReference Property debrisMarker auto
 ObjectReference Property landingMarker auto
 Perk Property YoureFucked auto
 float alduinsHealth
+
+FormList Property S4Firer  Auto  

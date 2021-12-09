@@ -2,21 +2,21 @@ Scriptname _AA_Stage4FiringScript extends ObjectReference
 
 ObjectReference Property target auto
 Spell Property fireball auto
-Event OnLoad()
-	RegisterForSingleUpdate(Utility.RandomInt(1, 3))
+
+int Property Var1 Auto
+int Property Var2 Auto
+
+Event OnCellAttach()
+	RegisterForSingleUpdate(Utility.RandomInt(Var1, Var2))
 EndEvent
 
 Event OnUpdate()
-	if self.is3DLoaded()
+	if self.is3DLoaded() && !self.IsDisabled()
 		fireball.Cast(self, target)
 	endif 
-	RegisterForSingleUpdate(Utility.RandomInt(1, 3))
-EndEvent
-
-Event OnUnload()
-	UnregisterForUpdate()
+	RegisterForSingleUpdate(Utility.RandomInt(Var1, Var2))
 EndEvent
 
 Event OnCellDetach()
-	UnregisterForUpdate()
+	UnregisterforUpdate()
 EndEvent
