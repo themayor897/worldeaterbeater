@@ -7,19 +7,45 @@ Scriptname _WEB_BattleUtilityQuest Extends Quest Hidden
 ReferenceAlias Property Alias_Alduin Auto
 ;END ALIAS PROPERTY
 
-;BEGIN FRAGMENT Fragment_18
-Function Fragment_18()
+;BEGIN FRAGMENT Fragment_13
+Function Fragment_13()
 ;BEGIN CODE
-playerRef.TranslateToRef(BigAlduin, 700)
-Game.ShakeCamera(playerRef, 1, 6)
+AlduinScale.SetValue(3)
+Alduin.EvaluatePackage()
+FelldirRefNEW.DisableNoWait(true)
+GormlaithRefNEW.DisableNoWait(true)
+HakonRefNew.DisableNoWait(true)
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_3
+Function Fragment_3()
+;BEGIN CODE
+;Transition to stage 5 (alduins back to sovngarde)
+
+alduinsHealth = (15000 - (alduinHealth.GetValue() * 400))
+if(alduinsHealth < 2000)
+	alduinsHealth = 2000
+endif
+PlayerRef.MoveTo(playerMarker)
+debrisMarker.EnableNoWait()
+alduin.SetScale(1)
+alduin.SetAllowFlying(false)
+alduin.SetDontMove(false)
+AlduinScale.SetValue(100)
+Alduin.AddPerk(YoureFucked)
+alduin.setActorValue("Health", alduinsHealth)
+;alduin.MoveTo(landingMarker)
+FelldirRefNEW.EnableNoWait()
+GormlaithRefNEW.EnableNoWait()
+HakonRefNew.EnableNoWait()
+			
+Alduin.DisableNoWait()
 Utility.Wait(4)
-music3.Remove()
-playerRef.StopTranslation()
-playerRef.RemoveSpell(unShout)
-playerRef.MoveTo(alduinBack)
+Alduin.EnableNoWait()
 Utility.Wait(3)
-Music4.Add()
-SetStage(40)
+music15.Add()
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -30,17 +56,6 @@ Function Fragment_6()
 ;Start of Alduin battle
 
 Music15.add()
-;END CODE
-EndFunction
-;END FRAGMENT
-
-;BEGIN FRAGMENT Fragment_4
-Function Fragment_4()
-;BEGIN CODE
-;Player on Alduin's back
-
-Utility.Wait(100)
-SetStage(41)
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -67,23 +82,6 @@ FadeToBlackHoldImod.Remove()
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_17
-Function Fragment_17()
-;BEGIN CODE
-Music2.Remove()
-Utility.Wait(5)
-Game.ShakeCamera(playerRef, 1, 1)
-dragonMadSound.Play(playerRef)
-playerRef.TranslateToRef(alduinMouth, 500)
-Utility.Wait(5)
-playerRef.StopTranslation()
-playerRef.MoveTo(outside)
-Utility.Wait(3)
-Music3.Add()
-;END CODE
-EndFunction
-;END FRAGMENT
-
 ;BEGIN FRAGMENT Fragment_9
 Function Fragment_9()
 ;BEGIN CODE
@@ -93,6 +91,17 @@ playerRef.SetGhost(True)
 Alduin.DispelAllSpells()
 AlduinScale.SetValue(1)
 Alduin.EvaluatePackage()
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_4
+Function Fragment_4()
+;BEGIN CODE
+;Player on Alduin's back
+
+Utility.Wait(100)
+SetStage(41)
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -109,46 +118,17 @@ Alduin.EvaluatePackage()
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_3
-Function Fragment_3()
+;BEGIN FRAGMENT Fragment_18
+Function Fragment_18()
 ;BEGIN CODE
-;Transition to stage 5 (alduins back to sovngarde)
-
-alduinsHealth = (15000 - (alduinHealth.GetValue() * 400))
-if(alduinsHealth < 2000)
-	alduinsHealth = 2000
-endif
-music4.Remove()
-PlayerRef.MoveTo(playerMarker)
-debrisMarker.EnableNoWait()
-alduin.SetScale(1)
-alduin.SetAllowFlying(false)
-alduin.SetDontMove(false)
-AlduinScale.SetValue(100)
-Alduin.AddPerk(YoureFucked)
-alduin.setActorValue("Health", alduinsHealth)
-;alduin.MoveTo(landingMarker)
-FelldirRefNEW.EnableNoWait()
-GormlaithRefNEW.EnableNoWait()
-HakonRefNew.EnableNoWait()
-			
-Alduin.DisableNoWait()
+playerRef.TranslateToRef(BigAlduin, 700)
+Game.ShakeCamera(playerRef, 1, 6)
 Utility.Wait(4)
-Alduin.EnableNoWait()
+playerRef.StopTranslation()
+playerRef.RemoveSpell(unShout)
+playerRef.MoveTo(alduinBack)
 Utility.Wait(3)
-music15.Add()
-;END CODE
-EndFunction
-;END FRAGMENT
-
-;BEGIN FRAGMENT Fragment_13
-Function Fragment_13()
-;BEGIN CODE
-AlduinScale.SetValue(3)
-Alduin.EvaluatePackage()
-FelldirRefNEW.DisableNoWait(true)
-GormlaithRefNEW.DisableNoWait(true)
-HakonRefNew.DisableNoWait(true)
+SetStage(40)
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -164,6 +144,21 @@ shooter1.EnableNoWait()
 walls.DisableNoWait()
 Utility.Wait(3)
 PlayerRef.SetGhost(false)
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_17
+Function Fragment_17()
+;BEGIN CODE
+Utility.Wait(5)
+Game.ShakeCamera(playerRef, 1, 1)
+dragonMadSound.Play(playerRef)
+playerRef.TranslateToRef(alduinMouth, 500)
+Utility.Wait(5)
+playerRef.StopTranslation()
+playerRef.MoveTo(outside)
+Utility.Wait(3)
 ;END CODE
 EndFunction
 ;END FRAGMENT
