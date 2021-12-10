@@ -1,5 +1,5 @@
 ;BEGIN FRAGMENT CODE - Do not edit anything between this and the end comment
-;NEXT FRAGMENT INDEX 19
+;NEXT FRAGMENT INDEX 21
 Scriptname _WEB_BattleUtilityQuest Extends Quest Hidden
 
 ;BEGIN ALIAS PROPERTY Alduin
@@ -19,17 +19,21 @@ Alduin.EvaluatePackage()
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_2
-Function Fragment_2()
+;BEGIN FRAGMENT Fragment_4
+Function Fragment_4()
 ;BEGIN CODE
-;Player has entered the bottom of Alduin's stomach while falling.
+;Player on Alduin's back
 
-acid.TranslateToRef(acidMarker, 30)
-acidTrigger.TranslateToRef(acidMarker, 75)
-shooter1.EnableNoWait()
-walls.DisableNoWait()
-Utility.Wait(3)
-PlayerRef.SetGhost(false)
+Utility.Wait(99)
+Int iIndex = S4Firer.GetSize()
+	While iIndex
+		iIndex -= 1
+		ObjectReference kReference = S4Firer.GetAt(iIndex) As ObjectReference
+		If kReference.IsEnabled()
+			kReference.Disable()
+		EndIf
+	EndWhile
+SetStage(41)
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -52,6 +56,16 @@ Utility.Wait(1)
 wombThrow.PushActorAway(playerRef, 30)
 FadeToBlackHoldImod.PopTo(FadeToBlackBackImod)
 FadeToBlackHoldImod.Remove()
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_6
+Function Fragment_6()
+;BEGIN CODE
+;Start of Alduin battle
+
+Music15.add()
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -108,16 +122,6 @@ music15.Add()
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_6
-Function Fragment_6()
-;BEGIN CODE
-;Start of Alduin battle
-
-Music15.add()
-;END CODE
-EndFunction
-;END FRAGMENT
-
 ;BEGIN FRAGMENT Fragment_9
 Function Fragment_9()
 ;BEGIN CODE
@@ -131,21 +135,17 @@ Alduin.EvaluatePackage()
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_4
-Function Fragment_4()
+;BEGIN FRAGMENT Fragment_2
+Function Fragment_2()
 ;BEGIN CODE
-;Player on Alduin's back
+;Player has entered the bottom of Alduin's stomach while falling.
 
-Utility.Wait(99)
-Int iIndex = S4Firer.GetSize()
-	While iIndex
-		iIndex -= 1
-		ObjectReference kReference = S4Firer.GetAt(iIndex) As ObjectReference
-		If kReference.IsEnabled()
-			kReference.Disable()
-		EndIf
-	EndWhile
-SetStage(41)
+acid.TranslateToRef(acidMarker, 30)
+acidTrigger.TranslateToRef(acidMarker, 75)
+shooter1.EnableNoWait()
+walls.DisableNoWait()
+Utility.Wait(3)
+PlayerRef.SetGhost(false)
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -165,6 +165,10 @@ EndFunction
 ;BEGIN FRAGMENT Fragment_18
 Function Fragment_18()
 ;BEGIN CODE
+shooter4.disable()
+shooter5.disable()
+shooter6.disable()
+shooter7.disable()
 playerRef.TranslateToRef(BigAlduin, 700)
 Game.ShakeCamera(playerRef, 1, 6)
 Utility.Wait(4)
@@ -173,6 +177,17 @@ playerRef.RemoveSpell(unShout)
 playerRef.MoveTo(alduinBack)
 Utility.Wait(3)
 SetStage(40)
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_19
+Function Fragment_19()
+;BEGIN CODE
+;Alduin Dead
+
+music15.remove()
+stop()
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -220,10 +235,14 @@ Sound Property dragonMadSound auto
 
 ;Stage 3: Destroyed Sovngarde
 spell Property unShout auto
-ObjectReference Property alduinBack auto
 Actor Property BigAlduin auto
+ObjectReference Property shooter4 auto
+ObjectReference Property shooter5 auto
+ObjectReference Property shooter6 auto
+ObjectReference Property shooter7 auto
 
 ;Stage 4: Riding on his back
+ObjectReference Property alduinBack auto
 
 
 ;Stage 5: Back in Sovngarde
