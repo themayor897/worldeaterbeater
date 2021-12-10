@@ -2,7 +2,6 @@ Scriptname _AA_StomachFiringModule extends ObjectReference
 
 Spell Property alduinSpell auto
 ObjectReference Property firingMarker auto
-GlobalVariable Property alduinGlobal auto
 Actor Property playerRef auto
 
 int randomTime

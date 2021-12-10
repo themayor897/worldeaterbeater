@@ -6,13 +6,14 @@ bool doOnce02 = False
 
 Event OnCombatStateChanged(Actor akTarget, int aeCombatState)
 	if(doOnce01 == False)
+		Alduin.SetActorValue("Health", 20000)
 		GetOwningQuest().SetStage(10)
 		doOnce01 = True
 	endif
 EndEvent
 
 Event OnHit(ObjectReference akAggressor, Form akSource, Projectile akProjectile, bool abPowerAttack, bool abSneakAttack, bool abBashAttack, bool abHitBlocked)
-    if(Alduin.GetActorValue("health") < 15000 &&  !DoOnce02)
+    if(Alduin.GetActorValue("health") < 18000 && !DoOnce02)
         DoOnce02 = true;
         GetOwningQuest().SetStage(11)
     endif

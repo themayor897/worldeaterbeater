@@ -7,55 +7,13 @@ Scriptname _WEB_BattleUtilityQuest Extends Quest Hidden
 ReferenceAlias Property Alias_Alduin Auto
 ;END ALIAS PROPERTY
 
-;BEGIN FRAGMENT Fragment_11
-Function Fragment_11()
+;BEGIN FRAGMENT Fragment_19
+Function Fragment_19()
 ;BEGIN CODE
-playerRef.PushActorAway(FelldirRefNEW, 30)
-playerRef.PushActorAway(GormlaithRefNEW, 30)
-playerRef.PushActorAway(HakonRefNew, 30)
-AlduinScale.SetValue(2)
-Alduin.EvaluatePackage()
-;END CODE
-EndFunction
-;END FRAGMENT
+;Alduin Dead
 
-;BEGIN FRAGMENT Fragment_4
-Function Fragment_4()
-;BEGIN CODE
-;Player on Alduin's back
-
-Utility.Wait(99)
-Int iIndex = S4Firer.GetSize()
-	While iIndex
-		iIndex -= 1
-		ObjectReference kReference = S4Firer.GetAt(iIndex) As ObjectReference
-		If kReference.IsEnabled()
-			kReference.Disable()
-		EndIf
-	EndWhile
-SetStage(41)
-;END CODE
-EndFunction
-;END FRAGMENT
-
-;BEGIN FRAGMENT Fragment_15
-Function Fragment_15()
-;BEGIN CODE
-;Increase his size
-
-AlduinScale.SetValue(4)
-FadeToBlackImod.Apply()
-utility.wait(2)
-FadeToBlackImod.PopTo(FadeToBlackHoldImod)
-Utility.Wait(4)
-eatingSound.Play(playerRef)
-Music15.Remove()
-Utility.Wait(3)
-playerRef.MoveTo(wombEntrance)
-Utility.Wait(1)
-wombThrow.PushActorAway(playerRef, 30)
-FadeToBlackHoldImod.PopTo(FadeToBlackBackImod)
-FadeToBlackHoldImod.Remove()
+music15.remove()
+stop()
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -66,58 +24,6 @@ Function Fragment_6()
 ;Start of Alduin battle
 
 Music15.add()
-;END CODE
-EndFunction
-;END FRAGMENT
-
-;BEGIN FRAGMENT Fragment_17
-Function Fragment_17()
-;BEGIN CODE
-Shooter1.UnregisterForUpdate()
-Shooter2.UnregisterForUpdate()
-Shooter3.UnregisterForUpdate()
-Shooter1.disable()
-Shooter2.disable()
-Shooter3.disable()
-Utility.Wait(5)
-Game.ShakeCamera(playerRef, 1, 1)
-dragonMadSound.Play(playerRef)
-playerRef.TranslateToRef(alduinMouth, 500)
-Utility.Wait(5)
-playerRef.StopTranslation()
-playerRef.MoveTo(outside)
-Utility.Wait(3)
-;END CODE
-EndFunction
-;END FRAGMENT
-
-;BEGIN FRAGMENT Fragment_3
-Function Fragment_3()
-;BEGIN CODE
-;Transition to stage 5 (alduins back to sovngarde)
-
-alduinsHealth = (15000 - (alduinHealth.GetValue() * 400))
-if(alduinsHealth < 2000)
-	alduinsHealth = 2000
-endif
-PlayerRef.MoveTo(playerMarker)
-debrisMarker.EnableNoWait()
-alduin.SetScale(1)
-alduin.SetAllowFlying(false)
-alduin.SetDontMove(false)
-AlduinScale.SetValue(100)
-Alduin.AddPerk(YoureFucked)
-alduin.setActorValue("Health", alduinsHealth)
-;alduin.MoveTo(landingMarker)
-FelldirRefNEW.EnableNoWait()
-GormlaithRefNEW.EnableNoWait()
-HakonRefNew.EnableNoWait()
-			
-Alduin.DisableNoWait()
-Utility.Wait(4)
-Alduin.EnableNoWait()
-Utility.Wait(3)
-music15.Add()
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -150,18 +56,6 @@ PlayerRef.SetGhost(false)
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_13
-Function Fragment_13()
-;BEGIN CODE
-AlduinScale.SetValue(3)
-Alduin.EvaluatePackage()
-FelldirRefNEW.DisableNoWait(true)
-GormlaithRefNEW.DisableNoWait(true)
-HakonRefNew.DisableNoWait(true)
-;END CODE
-EndFunction
-;END FRAGMENT
-
 ;BEGIN FRAGMENT Fragment_18
 Function Fragment_18()
 ;BEGIN CODE
@@ -181,13 +75,116 @@ SetStage(40)
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_19
-Function Fragment_19()
+;BEGIN FRAGMENT Fragment_11
+Function Fragment_11()
 ;BEGIN CODE
-;Alduin Dead
+playerRef.PushActorAway(FelldirRefNEW, 30)
+playerRef.PushActorAway(GormlaithRefNEW, 30)
+playerRef.PushActorAway(HakonRefNew, 30)
+AlduinScale.SetValue(2)
+Alduin.EvaluatePackage()
+;END CODE
+EndFunction
+;END FRAGMENT
 
-music15.remove()
-stop()
+;BEGIN FRAGMENT Fragment_13
+Function Fragment_13()
+;BEGIN CODE
+AlduinScale.SetValue(3)
+Alduin.EvaluatePackage()
+FelldirRefNEW.DisableNoWait(true)
+GormlaithRefNEW.DisableNoWait(true)
+HakonRefNew.DisableNoWait(true)
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_15
+Function Fragment_15()
+;BEGIN CODE
+;Increase his size
+
+AlduinScale.SetValue(4)
+FadeToBlackImod.Apply()
+utility.wait(2)
+FadeToBlackImod.PopTo(FadeToBlackHoldImod)
+Utility.Wait(4)
+eatingSound.Play(playerRef)
+Music15.Remove()
+Utility.Wait(3)
+playerRef.MoveTo(wombEntrance)
+Utility.Wait(1)
+wombThrow.PushActorAway(playerRef, 30)
+FadeToBlackHoldImod.PopTo(FadeToBlackBackImod)
+FadeToBlackHoldImod.Remove()
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_3
+Function Fragment_3()
+;BEGIN CODE
+;Transition to stage 5 (alduins back to sovngarde)
+
+Alduin.ForceActorValue("Health", (10000-((alduinhealth.GetValue() as Int)*400)))
+PlayerRef.MoveTo(playerMarker)
+debrisMarker.EnableNoWait()
+alduin.SetScale(1)
+alduin.SetAllowFlying(false)
+alduin.SetDontMove(false)
+AlduinScale.SetValue(100)
+Alduin.AddPerk(YoureFucked)
+alduin.setActorValue("Health", alduinsHealth)
+;alduin.MoveTo(landingMarker)
+FelldirRefNEW.EnableNoWait()
+GormlaithRefNEW.EnableNoWait()
+HakonRefNew.EnableNoWait()
+			
+Alduin.DisableNoWait()
+Utility.Wait(4)
+Alduin.EnableNoWait()
+Utility.Wait(3)
+music15.Add()
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_17
+Function Fragment_17()
+;BEGIN CODE
+Shooter1.UnregisterForUpdate()
+Shooter2.UnregisterForUpdate()
+Shooter3.UnregisterForUpdate()
+Shooter1.disable()
+Shooter2.disable()
+Shooter3.disable()
+Utility.Wait(5)
+Game.ShakeCamera(playerRef, 1, 1)
+dragonMadSound.Play(playerRef)
+playerRef.TranslateToRef(alduinMouth, 500)
+Utility.Wait(5)
+playerRef.StopTranslation()
+playerRef.MoveTo(outside)
+Utility.Wait(3)
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_4
+Function Fragment_4()
+;BEGIN CODE
+;Player on Alduin's back
+
+Utility.Wait(99)
+Int iIndex = S4Firer.GetSize()
+	While iIndex
+		iIndex -= 1
+		ObjectReference kReference = S4Firer.GetAt(iIndex) As ObjectReference
+		If kReference.IsEnabled()
+			kReference.Disable()
+		EndIf
+	EndWhile
+SetStage(41)
 ;END CODE
 EndFunction
 ;END FRAGMENT

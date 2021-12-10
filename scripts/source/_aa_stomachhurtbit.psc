@@ -13,7 +13,7 @@ Quest property UtilityQ auto
 Event OnHit(ObjectReference akAggressor, Form akSource, Projectile akProjectile, bool abPowerAttack, bool abSneakAttack,bool abBashAttack, bool abHitBlocked)
     if(akAggressor == playerRef)
     if(doOnce == False)
-    alduinHealth.setValue(alduinHealth.getValue() + 1)
+    alduinHealth.Mod(1)
     ;Play a roar sound?
     doOnce = True
     if(alduinHealth.getValue() == 5)

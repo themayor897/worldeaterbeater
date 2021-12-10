@@ -12,7 +12,7 @@ Event OnHit(ObjectReference akAggressor, Form akSource, Projectile akProjectile,
 	if(hitOnce == false)
 	if(akAggressor == PlayerRef)
 		hitOnce = true
-		alduinHealth.setValue(alduinHealth.getValue() + 1)
+		alduinHealth.mod(1)
 		random = Utility.RandomInt(0, 2)
 		self.DisableNoWait(true)
 		if(random == 0)
