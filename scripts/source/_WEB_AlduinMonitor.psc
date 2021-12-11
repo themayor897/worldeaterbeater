@@ -1,11 +1,12 @@
 Scriptname _WEB_AlduinMonitor extends ReferenceAlias  
 
+Quest Property MQ305 Auto
 Actor Property Alduin Auto
 bool doOnce01 = False
 bool doOnce02 = False
 
 Event OnCombatStateChanged(Actor akTarget, int aeCombatState)
-	if(doOnce01 == False)
+	if(doOnce01 == False) && MQ305.Getstage() >= 10
 		Alduin.SetActorValue("Health", 20000)
 		GetOwningQuest().SetStage(10)
 		doOnce01 = True
