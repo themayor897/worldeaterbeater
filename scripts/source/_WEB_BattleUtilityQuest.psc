@@ -7,17 +7,6 @@ Scriptname _WEB_BattleUtilityQuest Extends Quest Hidden
 ReferenceAlias Property Alias_Alduin Auto
 ;END ALIAS PROPERTY
 
-;BEGIN FRAGMENT Fragment_19
-Function Fragment_19()
-;BEGIN CODE
-;Alduin Dead
-
-music15.remove()
-stop()
-;END CODE
-EndFunction
-;END FRAGMENT
-
 ;BEGIN FRAGMENT Fragment_3
 Function Fragment_3()
 ;BEGIN CODE
@@ -46,15 +35,58 @@ music15.Add()
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_9
-Function Fragment_9()
+;BEGIN FRAGMENT Fragment_6
+Function Fragment_6()
 ;BEGIN CODE
-;Disable player's controls and make them invicible
-Game.DisablePlayerControls()
-playerRef.SetGhost(True)
-Alduin.DispelAllSpells()
-AlduinScale.SetValue(1)
-Alduin.EvaluatePackage()
+;Start of Alduin battle
+
+Music15.add()
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_19
+Function Fragment_19()
+;BEGIN CODE
+;Alduin Dead
+
+music15.remove()
+stop()
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_18
+Function Fragment_18()
+;BEGIN CODE
+shooter4.disable()
+shooter5.disable()
+shooter6.disable()
+shooter7.disable()
+playerRef.TranslateToRef(BigAlduin, 700)
+Game.ShakeCamera(playerRef, 1, 6)
+Utility.Wait(4)
+music3.remove()
+playerRef.StopTranslation()
+playerRef.RemoveSpell(unShout)
+playerRef.MoveTo(alduinBack)
+Utility.Wait(3)
+SetStage(40)
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_2
+Function Fragment_2()
+;BEGIN CODE
+;Player has entered the bottom of Alduin's stomach while falling.
+
+acid.TranslateToRef(acidMarker, 30)
+acidTrigger.TranslateToRef(acidMarker, 75)
+shooter1.EnableNoWait()
+walls.DisableNoWait()
+Utility.Wait(3)
+PlayerRef.SetGhost(false)
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -81,21 +113,15 @@ FadeToBlackHoldImod.Remove()
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_4
-Function Fragment_4()
+;BEGIN FRAGMENT Fragment_9
+Function Fragment_9()
 ;BEGIN CODE
-;Player on Alduin's back
-
-Utility.Wait(99)
-Int iIndex = S4Firer.GetSize()
-	While iIndex
-		iIndex -= 1
-		ObjectReference kReference = S4Firer.GetAt(iIndex) As ObjectReference
-		If kReference.IsEnabled()
-			kReference.Disable()
-		EndIf
-	EndWhile
-SetStage(41)
+;Disable player's controls and make them invicible
+Game.DisablePlayerControls()
+playerRef.SetGhost(True)
+Alduin.DispelAllSpells()
+AlduinScale.SetValue(1)
+Alduin.EvaluatePackage()
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -121,18 +147,6 @@ Utility.Wait(3)
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_13
-Function Fragment_13()
-;BEGIN CODE
-AlduinScale.SetValue(3)
-Alduin.EvaluatePackage()
-FelldirRefNEW.DisableNoWait(true)
-GormlaithRefNEW.DisableNoWait(true)
-HakonRefNew.DisableNoWait(true)
-;END CODE
-EndFunction
-;END FRAGMENT
-
 ;BEGIN FRAGMENT Fragment_11
 Function Fragment_11()
 ;BEGIN CODE
@@ -145,46 +159,33 @@ Alduin.EvaluatePackage()
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_2
-Function Fragment_2()
+;BEGIN FRAGMENT Fragment_13
+Function Fragment_13()
 ;BEGIN CODE
-;Player has entered the bottom of Alduin's stomach while falling.
-
-acid.TranslateToRef(acidMarker, 30)
-acidTrigger.TranslateToRef(acidMarker, 75)
-shooter1.EnableNoWait()
-walls.DisableNoWait()
-Utility.Wait(3)
-PlayerRef.SetGhost(false)
+AlduinScale.SetValue(3)
+Alduin.EvaluatePackage()
+FelldirRefNEW.DisableNoWait(true)
+GormlaithRefNEW.DisableNoWait(true)
+HakonRefNew.DisableNoWait(true)
 ;END CODE
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_6
-Function Fragment_6()
+;BEGIN FRAGMENT Fragment_4
+Function Fragment_4()
 ;BEGIN CODE
-;Start of Alduin battle
+;Player on Alduin's back
 
-Music15.add()
-;END CODE
-EndFunction
-;END FRAGMENT
-
-;BEGIN FRAGMENT Fragment_18
-Function Fragment_18()
-;BEGIN CODE
-shooter4.disable()
-shooter5.disable()
-shooter6.disable()
-shooter7.disable()
-playerRef.TranslateToRef(BigAlduin, 700)
-Game.ShakeCamera(playerRef, 1, 6)
-Utility.Wait(4)
-playerRef.StopTranslation()
-playerRef.RemoveSpell(unShout)
-playerRef.MoveTo(alduinBack)
-Utility.Wait(3)
-SetStage(40)
+Utility.Wait(99)
+Int iIndex = S4Firer.GetSize()
+	While iIndex
+		iIndex -= 1
+		ObjectReference kReference = S4Firer.GetAt(iIndex) As ObjectReference
+		If kReference.IsEnabled()
+			kReference.Disable()
+		EndIf
+	EndWhile
+SetStage(41)
 ;END CODE
 EndFunction
 ;END FRAGMENT
