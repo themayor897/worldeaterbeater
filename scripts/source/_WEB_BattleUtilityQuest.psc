@@ -7,6 +7,45 @@ Scriptname _WEB_BattleUtilityQuest Extends Quest Hidden
 ReferenceAlias Property Alias_Alduin Auto
 ;END ALIAS PROPERTY
 
+;BEGIN FRAGMENT Fragment_6
+Function Fragment_6()
+;BEGIN CODE
+;Start of Alduin battle
+
+Music15.add()
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_3
+Function Fragment_3()
+;BEGIN CODE
+;Transition to stage 5 (alduins back to sovngarde)
+
+Alduin.SetActorValue("Health", 20000)
+Alduin.DamageActorValue("Health", (10000+((alduinhealth.GetValue() as Int)*400)))
+PlayerRef.MoveTo(playerMarker)
+debrisMarker.EnableNoWait()
+alduin.SetScale(1)
+alduin.SetAllowFlying(false)
+alduin.SetDontMove(false)
+AlduinScale.SetValue(100)
+Alduin.AddPerk(YoureFucked)
+alduin.setActorValue("Health", alduinsHealth)
+;alduin.MoveTo(landingMarker)
+FelldirRefNEW.EnableNoWait()
+GormlaithRefNEW.EnableNoWait()
+HakonRefNew.EnableNoWait()
+			
+Alduin.DisableNoWait()
+Utility.Wait(4)
+Alduin.EnableNoWait()
+Utility.Wait(3)
+music15.Add()
+;END CODE
+EndFunction
+;END FRAGMENT
+
 ;BEGIN FRAGMENT Fragment_4
 Function Fragment_4()
 ;BEGIN CODE
@@ -26,45 +65,14 @@ SetStage(41)
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_11
-Function Fragment_11()
+;BEGIN FRAGMENT Fragment_13
+Function Fragment_13()
 ;BEGIN CODE
-playerRef.PushActorAway(FelldirRefNEW, 30)
-playerRef.PushActorAway(GormlaithRefNEW, 30)
-playerRef.PushActorAway(HakonRefNew, 30)
-AlduinScale.SetValue(2)
+AlduinScale.SetValue(3)
 Alduin.EvaluatePackage()
-;END CODE
-EndFunction
-;END FRAGMENT
-
-;BEGIN FRAGMENT Fragment_6
-Function Fragment_6()
-;BEGIN CODE
-;Start of Alduin battle
-
-Music15.add()
-;END CODE
-EndFunction
-;END FRAGMENT
-
-;BEGIN FRAGMENT Fragment_17
-Function Fragment_17()
-;BEGIN CODE
-Shooter1.UnregisterForUpdate()
-Shooter2.UnregisterForUpdate()
-Shooter3.UnregisterForUpdate()
-Shooter1.disable()
-Shooter2.disable()
-Shooter3.disable()
-Utility.Wait(5)
-Game.ShakeCamera(playerRef, 1, 1)
-dragonMadSound.Play(playerRef)
-playerRef.TranslateToRef(alduinMouth, 500)
-Utility.Wait(5)
-playerRef.StopTranslation()
-playerRef.MoveTo(outside)
-Utility.Wait(3)
+FelldirRefNEW.DisableNoWait(true)
+GormlaithRefNEW.DisableNoWait(true)
+HakonRefNew.DisableNoWait(true)
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -91,15 +99,23 @@ FadeToBlackHoldImod.Remove()
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_9
-Function Fragment_9()
+;BEGIN FRAGMENT Fragment_17
+Function Fragment_17()
 ;BEGIN CODE
-;Disable player's controls and make them invicible
-Game.DisablePlayerControls()
-playerRef.SetGhost(True)
-Alduin.DispelAllSpells()
-AlduinScale.SetValue(1)
-Alduin.EvaluatePackage()
+Shooter1.UnregisterForUpdate()
+Shooter2.UnregisterForUpdate()
+Shooter3.UnregisterForUpdate()
+Shooter1.disable()
+Shooter2.disable()
+Shooter3.disable()
+Utility.Wait(5)
+Game.ShakeCamera(playerRef, 1, 1)
+dragonMadSound.Play(playerRef)
+playerRef.TranslateToRef(alduinMouth, 500)
+Utility.Wait(5)
+playerRef.StopTranslation()
+playerRef.MoveTo(outside)
+Utility.Wait(3)
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -119,30 +135,25 @@ PlayerRef.SetGhost(false)
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_3
-Function Fragment_3()
+;BEGIN FRAGMENT Fragment_11
+Function Fragment_11()
 ;BEGIN CODE
-;Transition to stage 5 (alduins back to sovngarde)
+playerRef.PushActorAway(FelldirRefNEW, 30)
+playerRef.PushActorAway(GormlaithRefNEW, 30)
+playerRef.PushActorAway(HakonRefNew, 30)
+AlduinScale.SetValue(2)
+Alduin.EvaluatePackage()
+;END CODE
+EndFunction
+;END FRAGMENT
 
-Alduin.DamageActorValue("Health", (10000+((alduinhealth.GetValue() as Int)*400)))
-PlayerRef.MoveTo(playerMarker)
-debrisMarker.EnableNoWait()
-alduin.SetScale(1)
-alduin.SetAllowFlying(false)
-alduin.SetDontMove(false)
-AlduinScale.SetValue(100)
-Alduin.AddPerk(YoureFucked)
-alduin.setActorValue("Health", alduinsHealth)
-;alduin.MoveTo(landingMarker)
-FelldirRefNEW.EnableNoWait()
-GormlaithRefNEW.EnableNoWait()
-HakonRefNew.EnableNoWait()
-			
-Alduin.DisableNoWait()
-Utility.Wait(4)
-Alduin.EnableNoWait()
-Utility.Wait(3)
-music15.Add()
+;BEGIN FRAGMENT Fragment_19
+Function Fragment_19()
+;BEGIN CODE
+;Alduin Dead
+
+music15.remove()
+stop()
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -166,25 +177,15 @@ SetStage(40)
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_13
-Function Fragment_13()
+;BEGIN FRAGMENT Fragment_9
+Function Fragment_9()
 ;BEGIN CODE
-AlduinScale.SetValue(3)
+;Disable player's controls and make them invicible
+Game.DisablePlayerControls()
+playerRef.SetGhost(True)
+Alduin.DispelAllSpells()
+AlduinScale.SetValue(1)
 Alduin.EvaluatePackage()
-FelldirRefNEW.DisableNoWait(true)
-GormlaithRefNEW.DisableNoWait(true)
-HakonRefNew.DisableNoWait(true)
-;END CODE
-EndFunction
-;END FRAGMENT
-
-;BEGIN FRAGMENT Fragment_19
-Function Fragment_19()
-;BEGIN CODE
-;Alduin Dead
-
-music15.remove()
-stop()
 ;END CODE
 EndFunction
 ;END FRAGMENT
