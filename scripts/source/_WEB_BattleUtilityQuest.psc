@@ -7,6 +7,34 @@ Scriptname _WEB_BattleUtilityQuest Extends Quest Hidden
 ReferenceAlias Property Alias_Alduin Auto
 ;END ALIAS PROPERTY
 
+;BEGIN FRAGMENT Fragment_3
+Function Fragment_3()
+;BEGIN CODE
+;Transition to stage 5 (alduins back to sovngarde)
+
+PlayerRef.MoveTo(playerMarker)
+debrisMarker.EnableNoWait()
+alduin.SetScale(1)
+alduin.SetAllowFlying(false)
+alduin.SetDontMove(false)
+AlduinScale.SetValue(100)
+Alduin.AddPerk(YoureFucked)
+;alduin.MoveTo(landingMarker)
+FelldirRefNEW.EnableNoWait()
+GormlaithRefNEW.EnableNoWait()
+HakonRefNew.EnableNoWait()
+			
+Alduin.DisableNoWait()
+Utility.Wait(4)
+Alduin.EnableNoWait()
+Alduin.SetActorValue("Health", 20000)
+Alduin.DamageActorValue("Health", (10000+((alduinhealth.GetValue() as Int)*400)))
+Utility.Wait(3)
+music15.Add()
+;END CODE
+EndFunction
+;END FRAGMENT
+
 ;BEGIN FRAGMENT Fragment_6
 Function Fragment_6()
 ;BEGIN CODE
@@ -17,31 +45,13 @@ Music15.add()
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_3
-Function Fragment_3()
+;BEGIN FRAGMENT Fragment_19
+Function Fragment_19()
 ;BEGIN CODE
-;Transition to stage 5 (alduins back to sovngarde)
+;Alduin Dead
 
-Alduin.SetActorValue("Health", 20000)
-Alduin.DamageActorValue("Health", (10000+((alduinhealth.GetValue() as Int)*400)))
-PlayerRef.MoveTo(playerMarker)
-debrisMarker.EnableNoWait()
-alduin.SetScale(1)
-alduin.SetAllowFlying(false)
-alduin.SetDontMove(false)
-AlduinScale.SetValue(100)
-Alduin.AddPerk(YoureFucked)
-alduin.setActorValue("Health", alduinsHealth)
-;alduin.MoveTo(landingMarker)
-FelldirRefNEW.EnableNoWait()
-GormlaithRefNEW.EnableNoWait()
-HakonRefNew.EnableNoWait()
-			
-Alduin.DisableNoWait()
-Utility.Wait(4)
-Alduin.EnableNoWait()
-Utility.Wait(3)
-music15.Add()
+music15.remove()
+stop()
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -77,24 +87,27 @@ HakonRefNew.DisableNoWait(true)
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_15
-Function Fragment_15()
+;BEGIN FRAGMENT Fragment_11
+Function Fragment_11()
 ;BEGIN CODE
-;Increase his size
+playerRef.PushActorAway(FelldirRefNEW, 30)
+playerRef.PushActorAway(GormlaithRefNEW, 30)
+playerRef.PushActorAway(HakonRefNew, 30)
+AlduinScale.SetValue(2)
+Alduin.EvaluatePackage()
+;END CODE
+EndFunction
+;END FRAGMENT
 
-AlduinScale.SetValue(4)
-FadeToBlackImod.Apply()
-utility.wait(2)
-FadeToBlackImod.PopTo(FadeToBlackHoldImod)
-Utility.Wait(4)
-eatingSound.Play(playerRef)
-Music15.Remove()
-Utility.Wait(3)
-playerRef.MoveTo(wombEntrance)
-Utility.Wait(1)
-wombThrow.PushActorAway(playerRef, 30)
-FadeToBlackHoldImod.PopTo(FadeToBlackBackImod)
-FadeToBlackHoldImod.Remove()
+;BEGIN FRAGMENT Fragment_9
+Function Fragment_9()
+;BEGIN CODE
+;Disable player's controls and make them invicible
+Game.DisablePlayerControls()
+playerRef.SetGhost(True)
+Alduin.DispelAllSpells()
+AlduinScale.SetValue(1)
+Alduin.EvaluatePackage()
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -135,25 +148,24 @@ PlayerRef.SetGhost(false)
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_11
-Function Fragment_11()
+;BEGIN FRAGMENT Fragment_15
+Function Fragment_15()
 ;BEGIN CODE
-playerRef.PushActorAway(FelldirRefNEW, 30)
-playerRef.PushActorAway(GormlaithRefNEW, 30)
-playerRef.PushActorAway(HakonRefNew, 30)
-AlduinScale.SetValue(2)
-Alduin.EvaluatePackage()
-;END CODE
-EndFunction
-;END FRAGMENT
+;Increase his size
 
-;BEGIN FRAGMENT Fragment_19
-Function Fragment_19()
-;BEGIN CODE
-;Alduin Dead
-
-music15.remove()
-stop()
+AlduinScale.SetValue(4)
+FadeToBlackImod.Apply()
+utility.wait(2)
+FadeToBlackImod.PopTo(FadeToBlackHoldImod)
+Utility.Wait(4)
+eatingSound.Play(playerRef)
+Music15.Remove()
+Utility.Wait(3)
+playerRef.MoveTo(wombEntrance)
+Utility.Wait(1)
+wombThrow.PushActorAway(playerRef, 30)
+FadeToBlackHoldImod.PopTo(FadeToBlackBackImod)
+FadeToBlackHoldImod.Remove()
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -173,19 +185,6 @@ playerRef.RemoveSpell(unShout)
 playerRef.MoveTo(alduinBack)
 Utility.Wait(3)
 SetStage(40)
-;END CODE
-EndFunction
-;END FRAGMENT
-
-;BEGIN FRAGMENT Fragment_9
-Function Fragment_9()
-;BEGIN CODE
-;Disable player's controls and make them invicible
-Game.DisablePlayerControls()
-playerRef.SetGhost(True)
-Alduin.DispelAllSpells()
-AlduinScale.SetValue(1)
-Alduin.EvaluatePackage()
 ;END CODE
 EndFunction
 ;END FRAGMENT
