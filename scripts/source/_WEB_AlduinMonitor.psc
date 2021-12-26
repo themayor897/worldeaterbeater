@@ -8,6 +8,7 @@ bool doOnce02 = False
 Event OnCombatStateChanged(Actor akTarget, int aeCombatState)
 	if(doOnce01 == False) && MQ305.Getstage() >= 10
 		Alduin.SetActorValue("Health", 20000)
+		Alduin.SetActorValue("speedmult", 50)
 		GetOwningQuest().SetStage(10)
 		doOnce01 = True
 	endif
