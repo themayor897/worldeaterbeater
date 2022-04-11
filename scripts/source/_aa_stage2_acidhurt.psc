@@ -6,29 +6,32 @@ ObjectReference Property acidMarker1 auto
 ObjectReference Property acidMarker2 auto
 Actor Property PlayerRef Auto
 int upState = 0;
-
+Location property webLocation auto
+Int InTrigger = 0
 Event OnTranslationComplete()
-	if(upState == 0)
-		Utility.Wait(1)
-		acid.translateToRef(acidMarker2, 30)
-		upState = 1
-	else
-		Utility.Wait(1)
-		acid.translateToRef(acidMarker1, 30)
-		upState = 0
-	endif
+    if(upState == 0)
+        Utility.Wait(1)
+        acid.translateToRef(acidMarker2, 30)
+        upState = 1
+    else
+        Utility.Wait(1)
+        acid.translateToRef(acidMarker1, 30)
+        upState = 0
+    endif
  
 EndEvent
 
 Event OnTriggerEnter(ObjectReference akActionRef)
-	if(akActionRef == Game.GetPlayer())
-		PlayerRef.AddSpell(fireSpell, false)
-	endif
+    if(akActionRef == playerRef && playerRef.isInLocation(webLocation) && inTrigger==0)
+                    InTrigger += 1
+        PlayerRef.AddSpell(fireSpell, false)
+    endif
 EndEvent
 
 
 Event OnTriggerLeave(ObjectReference akActionRef)
-	if(akActionRef == Game.GetPlayer())
-		PlayerRef.RemoveSpell(fireSpell)
-	endif
+    if(akActionRef ==playerRef && inTrigger >0)
+        PlayerRef.RemoveSpell(fireSpell)
+                    InTrigger -= 1
+    endif
 EndEvent
